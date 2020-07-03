@@ -5,6 +5,7 @@ import uploadConfig from '../config/upload';
 
 import UserRepository from '../repositories/UserRepository';
 import CreateUserService from '../services/CreateUserService';
+import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 import ensureAuthenticated from '../mddlewares/ensureAuthenticated';
 
 const usersRouter = Router();
@@ -42,8 +43,12 @@ usersRouter.post('/', async (request, response) => {
 usersRouter.patch('/avatar', ensureAuthenticated, upload.single('avatar'), async (request, response) => {
 
     try {
+        const updateUserAvatar = new UpdateUserAvatarService();
+
+        const user = await updateUserAvatar.execute({ user_id: request.user.id, avatarFilename: request.file.filename })
+
         console.log(request.file);
-        return response.json({sucesso: true});
+        return response.json(user);
 
     } catch (err) {
         return response
