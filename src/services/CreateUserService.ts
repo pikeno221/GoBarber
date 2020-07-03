@@ -3,6 +3,7 @@ import { hash } from 'bcryptjs';
 
 import User from '../models/User';
 import UserRepository from '../repositories/UserRepository';
+import AppError from '../errors/AppError';
 
 
 interface Request {
@@ -19,7 +20,7 @@ class CreateUserService {
 
 
         if (await userRepository.findByEmail(email)) {
-            throw Error('Email address  already registered on the system. ');
+            throw new AppError('Email address  already registered on the system. ', 422);
 
         }
 

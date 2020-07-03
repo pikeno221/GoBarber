@@ -30,7 +30,7 @@ sessionsRouter.post('/', async (request, response) => {
 
     } catch (err) {
         return response
-            .status(400)
+            .status(err.code)
             .json({ error: err.message })
 
     }
